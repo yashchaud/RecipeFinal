@@ -1,4 +1,5 @@
 const UserSchema = require("../schemas/userSchema");
+const SearchQueriesSchema = require("../schemas/searchQueriesSchema");
 const createError = require("http-errors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -49,8 +50,12 @@ const sessionController = {
     try {
       const { email, password } = req.body;
 
-      if (!email || !password) {
-        res.status(400).send("Please Add ALL Fields");
+      if (!email) {
+        res.status(400).send("Please Enter Email");
+      }
+
+      if (!password) {
+        res.status(400).send("Please Password");
       }
 
       const user = await UserSchema.findOne({ email: email });
@@ -59,10 +64,23 @@ const sessionController = {
         //Create JWT
         const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
-        res.cookie("jwt", accessToken, { httpOnly: true, sameSite: "None", secure: true, maxAge: process.env.SESSION_EXPIRE * 60 * 60 * 1000 });
+        res.cookie("jwt", accessToken, { httpOnly: true });
         res.status(200).json({ user });
       } else {
-        res.status(400).send("Invalid Credentials");
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const userCreated = await UserSchema.create({ email, password: hashedPassword });
+
+        if (userCreated) {
+          await SearchQueriesSchema.create({ userId: userCreated._id, searchQuery: [] });
+          const accessToken = jwt.sign({ id: userCreated._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+          res.cookie("jwt", accessToken, { httpOnly: true });
+          const user = { _id: userCreated._id, email: email };
+          res.status(201).json({ user });
+        } else {
+          res.status(400).send("Invalid User Data");
+        }
       }
     } catch (error) {
       return next(createError.InternalServerError(error));
@@ -76,7 +94,7 @@ const sessionController = {
         return res.sendStatus(204); //No Content
       }
 
-      res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+      res.clearCookie("jwt", { httpOnly: true });
       res.sendStatus(204);
     } catch (error) {
       return next(createError.InternalServerError(error));

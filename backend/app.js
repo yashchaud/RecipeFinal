@@ -52,4 +52,10 @@ app.post("/signin", signIn);
 app.get("/welcome", welcome);
 app.post("/refresh", refresh);
 
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+});
+
 module.exports = app;

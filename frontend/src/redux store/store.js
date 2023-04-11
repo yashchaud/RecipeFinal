@@ -1,24 +1,21 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const initialState = 
-  {
-    count: 0 ,
-    data: null,
-    active: false,
-    element : "",
-    pause : false,
-  }
-
-
+const initialState = {
+  count: 0,
+  data: null,
+  active: false,
+  element: "",
+  pause: false,
+  user: [],
+};
 
 const counterSlice = createSlice({
-  
-  name: 'counter',
+  name: "counter",
   initialState,
   reducers: {
     increment(state) {
-      if(state === null){
-        state.count = 0
+      if (state === null) {
+        state.count = 0;
       }
       state.count++;
     },
@@ -26,30 +23,32 @@ const counterSlice = createSlice({
       state.count--;
     },
     setData(state, action) {
-      console.log(action.payload)
+      console.log(action.payload);
       state.data = action.payload;
     },
     setActive(state, action) {
-      console.log(action.payload)
+      console.log(action.payload);
       state.active = action.payload;
     },
     setelement(state, action) {
-      
-      console.log(action.payload)
+      console.log(action.payload);
       state.element = action.payload;
     },
     setpause(state, action) {
-      
-      console.log(action.payload)
+      console.log(action.payload);
       state.pause = action.payload;
-    }
+    },
+    setUser(state, action) {
+      console.log(action.payload);
+      state.user = action.payload;
+    },
   },
 });
 
-export const { increment, decrement,setData,setActive ,setelement ,setpause} = counterSlice.actions;
+export const { increment, decrement, setData, setActive, setelement, setpause, setUser } = counterSlice.actions;
 
 const store = configureStore({
-  reducer: {counterSlice:counterSlice.reducer}
+  reducer: { counterSlice: counterSlice.reducer },
 });
 
 export default store;
