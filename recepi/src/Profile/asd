@@ -1,0 +1,157 @@
+import React,{forwardRef} from 'react'
+import styled from "styled-components";
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+const Nav = ((props, ref) => {
+
+
+
+  useEffect(() => {
+    const wraperchild = props.element.current.children[0]
+
+    const wraperchild2 = props.element.current.children[1]
+    console.log(wrapper.current.children[1].children[0])
+ const navele  = gsap.utils.toArray(Nava.current.children )
+
+    navele.forEach((nav) => {
+        nav.addEventListener("click", (e) => {
+            setnewel1(<Trans/>)
+            
+          if(e.target.textContent === "Trans"){
+            const state = Flip.getState(wraperchild2)
+    
+            gsap.to(wraperchild,2.5,{
+                duration: 1,
+                scale: 0.9,
+                ease: "Expo.easeOut",
+            })
+            gsap.set(wraperchild2,{position:"absolute",  top:0,left:0,
+                borderRadius: "3em 3em 0px 0px",
+              zIndex: 1,
+        })
+         
+       
+            const t1 = Flip.from(state, {
+                duration: 2.5,
+                ease: "Expo.easeOut(0.5)",
+                delay: 0.5,
+                marginTop: "0em",
+                paddingTop: "0",
+                borderRadius: 0,
+                onComplete: () => {
+                    
+                   setTimeout(() => {
+                    navigate("/trans")
+                   }, 3500);
+                         
+                    
+                    }
+            })
+            t1.fromTo(wraperchild2,{
+                paddingTop: "2em",
+                backgroundColor: "#fafafa",
+                 
+            }
+            ,{
+                duration: 2.5,
+                backgroundColor: "#171616",
+                 
+            }
+               , "-=2" )
+          }
+      if(e.target.textContent === "Marquee"){
+       
+        const state = Flip.getState(wraperchild2)
+    
+        gsap.to(wraperchild,2.5,{
+            duration: 1,
+            scale: 0.9,
+            ease: "Expo.easeOut",
+        })
+        gsap.set(wraperchild2,{position:"absolute",  top:0,left:0,
+            borderRadius: "3em 3em 0px 0px",
+          zIndex: 1,
+    })
+     
+   
+        const t1 = Flip.from(state, {
+            duration: 2.5,
+            ease: "Expo.easeOut(0.5)",
+            delay: 0.5,
+            marginTop: "0em",
+            paddingTop: "0",
+            borderRadius: 0,
+            onComplete: () => {
+                
+               setTimeout(() => {
+                navigate("/marquee")
+               }, 3500);
+                     
+                
+                }
+        })
+        t1.fromTo(wraperchild2,{
+            paddingTop: "2em",
+            backgroundColor: "#fafafa",
+             
+        }
+        ,{
+            duration: 2.5,
+            backgroundColor: "#171616",
+             
+        }
+           , "-=2" )
+
+    }
+
+})
+})
+   
+   
+}, [newel])
+  return (
+        <Cover ref={ref}>
+        <Link  to='#'>Trans</Link>
+        <Link to='#'>Marquee</Link>
+        <Link to='#'>Marquee</Link>
+
+        <Link to='#'>Marquee</Link>
+
+    </Cover>
+  )
+}
+
+)
+export default Nav
+
+const Cover = styled.div`
+     width: 25rem;
+    height: 4rem;
+    
+    overflow: hidden;
+position: fixed;
+bottom: 6
+rem;
+left: 48rem;
+display: flex;
+  justify-content: space-around;
+  align-items: center;
+   
+  background-color: rgba(170, 170, 170, 0.2);
+   border-radius: 10px;
+  backdrop-filter: blur(10rem);
+  box-shadow: 0 0 10px rgba(104, 63, 104, 0.459);
+  z-index: 10000;
+    a{
+         text-decoration: none;
+        font-size:0.8rem;
+        color: #202020;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        opacity: 1;
+        
+
+    }
+
+`
